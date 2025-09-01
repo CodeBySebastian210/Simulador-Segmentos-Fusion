@@ -8,8 +8,12 @@
  *
  * @author Lenovo
  */
-public class FrmSegmentosFusion extends javax.swing.JFrame {
+import java.util.ArrayList;
+import java.util.Random;
 
+public class FrmSegmentosFusion extends javax.swing.JFrame {
+    private ArrayList<Integer> listaNumeros = new ArrayList<>();
+    private ArrayList<ArrayList<Integer>> segmentos = new ArrayList<>();
     /**
      * Creates new form FrmSegmentosFusion
      */
@@ -40,9 +44,19 @@ public class FrmSegmentosFusion extends javax.swing.JFrame {
 
         btnCargar.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnCargar.setText("Cargar números aleatorios");
+        btnCargar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCargarActionPerformed(evt);
+            }
+        });
 
         btnDividir.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnDividir.setText("Dividir en segmentos");
+        btnDividir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDividirActionPerformed(evt);
+            }
+        });
 
         btnFusionar.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnFusionar.setText("Ordenar y fusionar segmentos");
@@ -91,6 +105,41 @@ public class FrmSegmentosFusion extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnCargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarActionPerformed
+        // TODO add your handling code here:
+        listaNumeros.clear();  
+        segmentos.clear();     
+        Random random = new Random();
+
+        for (int i = 0; i < 20; i++) {
+            listaNumeros.add(random.nextInt(100) + 1);
+        }
+
+        txtProceso.setText("Lista original:\n" + listaNumeros.toString() + "\n");
+    }//GEN-LAST:event_btnCargarActionPerformed
+
+    private void btnDividirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDividirActionPerformed
+        // TODO add your handling code here:
+        if (listaNumeros.isEmpty()) {
+            txtProceso.setText("Primero cargue los números aleatorios.\n");
+            return;
+        }
+
+        segmentos.clear();  
+
+        int tamSegmento = 5; 
+        for (int i = 0; i < listaNumeros.size(); i += tamSegmento) {
+            int fin = Math.min(i + tamSegmento, listaNumeros.size());
+            ArrayList<Integer> sublista = new ArrayList<>(listaNumeros.subList(i, fin));
+            segmentos.add(sublista);
+        }
+
+        txtProceso.append("\nSegmentos creados (tamaño 5):\n");
+        for (ArrayList<Integer> seg : segmentos) {
+            txtProceso.append(seg.toString() + "\n");
+        }
+    }//GEN-LAST:event_btnDividirActionPerformed
 
     /**
      * @param args the command line arguments

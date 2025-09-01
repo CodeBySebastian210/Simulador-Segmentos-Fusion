@@ -81,6 +81,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Cargar n&#xfa;meros aleatorios"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCargarActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnDividir">
       <Properties>
@@ -89,6 +92,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Dividir en segmentos"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDividirActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnFusionar">
       <Properties>
