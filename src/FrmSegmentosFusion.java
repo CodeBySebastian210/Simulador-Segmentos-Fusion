@@ -10,6 +10,7 @@
  */
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Collections;
 
 public class FrmSegmentosFusion extends javax.swing.JFrame {
     private ArrayList<Integer> listaNumeros = new ArrayList<>();
@@ -60,6 +61,11 @@ public class FrmSegmentosFusion extends javax.swing.JFrame {
 
         btnFusionar.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnFusionar.setText("Ordenar y fusionar segmentos");
+        btnFusionar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFusionarActionPerformed(evt);
+            }
+        });
 
         txtProceso.setEditable(false);
         txtProceso.setColumns(20);
@@ -140,6 +146,30 @@ public class FrmSegmentosFusion extends javax.swing.JFrame {
             txtProceso.append(seg.toString() + "\n");
         }
     }//GEN-LAST:event_btnDividirActionPerformed
+
+    private void btnFusionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFusionarActionPerformed
+        // TODO add your handling code here:
+        if (segmentos.isEmpty()) {
+            txtProceso.setText("Primero divida en segmentos.\n");
+            return;
+        }
+
+        txtProceso.append("\nSegmentos ordenados:\n");
+
+        for (ArrayList<Integer> seg : segmentos) {
+            Collections.sort(seg);
+            txtProceso.append(seg.toString() + "\n");
+        }
+
+        ArrayList<Integer> listaFinal = new ArrayList<>();
+        for (ArrayList<Integer> seg : segmentos) {
+            listaFinal.addAll(seg);
+        }
+
+        Collections.sort(listaFinal);
+
+        txtProceso.append("\nLista ordenada final:\n" + listaFinal.toString() + "\n");
+    }//GEN-LAST:event_btnFusionarActionPerformed
 
     /**
      * @param args the command line arguments
