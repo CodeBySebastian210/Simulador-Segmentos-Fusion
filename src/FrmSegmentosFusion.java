@@ -75,6 +75,11 @@ public class FrmSegmentosFusion extends javax.swing.JFrame {
         jScrollPane1.setViewportView(txtProceso);
 
         jButton1.setText("Mezcla Equilibrada Múltiple");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Método Polifásico");
 
@@ -183,6 +188,32 @@ public class FrmSegmentosFusion extends javax.swing.JFrame {
 
         txtProceso.append("\nLista ordenada final:\n" + listaFinal.toString() + "\n");
     }//GEN-LAST:event_btnFusionarActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        if (segmentos.isEmpty()) {
+            txtProceso.setText("Primero divida en segmentos.\n");
+            return;
+        }
+
+        txtProceso.append("\n--- Mezcla Equilibrada Múltiple ---\n");
+
+        ArrayList<ArrayList<Integer>> seleccionados = new ArrayList<>();
+        for (int i = 0; i < Math.min(3, segmentos.size()); i++) {
+            ArrayList<Integer> copia = new ArrayList<>(segmentos.get(i));
+            Collections.sort(copia);
+            txtProceso.append("Segmento ordenado: " + copia + "\n");
+            seleccionados.add(copia);
+        }
+
+        ArrayList<Integer> resultado = new ArrayList<>();
+        for (ArrayList<Integer> seg : seleccionados) {
+            resultado.addAll(seg);
+        }
+        Collections.sort(resultado);
+
+        txtProceso.append("Resultado final (Equilibrada Múltiple):\n" + resultado + "\n");
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
