@@ -15,6 +15,21 @@ import java.util.Collections;
 public class FrmSegmentosFusion extends javax.swing.JFrame {
     private ArrayList<Integer> listaNumeros = new ArrayList<>();
     private ArrayList<ArrayList<Integer>> segmentos = new ArrayList<>();
+    
+    private ArrayList<Integer> fusionarCorridas(ArrayList<Integer> a, ArrayList<Integer> b) {
+        ArrayList<Integer> resultado = new ArrayList<>();
+        int i = 0, j = 0;
+        while (i < a.size() && j < b.size()) {
+            if (a.get(i) <= b.get(j)) {
+                resultado.add(a.get(i++));
+            } else {
+                resultado.add(b.get(j++));
+            }
+        }
+        while (i < a.size()) resultado.add(a.get(i++));
+        while (j < b.size()) resultado.add(b.get(j++));
+        return resultado;
+    }
     /**
      * Creates new form FrmSegmentosFusion
      */
@@ -37,8 +52,8 @@ public class FrmSegmentosFusion extends javax.swing.JFrame {
         btnFusionar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtProceso = new javax.swing.JTextArea();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnEquilibrada = new javax.swing.JButton();
+        btnPolifasico = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -74,14 +89,19 @@ public class FrmSegmentosFusion extends javax.swing.JFrame {
         txtProceso.setRows(5);
         jScrollPane1.setViewportView(txtProceso);
 
-        jButton1.setText("Mezcla Equilibrada Múltiple");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnEquilibrada.setText("Mezcla Equilibrada Múltiple");
+        btnEquilibrada.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnEquilibradaActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Método Polifásico");
+        btnPolifasico.setText("Método Polifásico");
+        btnPolifasico.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPolifasicoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -103,9 +123,9 @@ public class FrmSegmentosFusion extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnFusionar)
                         .addGap(41, 41, 41)
-                        .addComponent(jButton1)
+                        .addComponent(btnEquilibrada)
                         .addGap(67, 67, 67)
-                        .addComponent(jButton2)))
+                        .addComponent(btnPolifasico)))
                 .addContainerGap(34, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -120,8 +140,8 @@ public class FrmSegmentosFusion extends javax.swing.JFrame {
                 .addGap(45, 45, 45)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnFusionar)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addComponent(btnEquilibrada)
+                    .addComponent(btnPolifasico))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(25, Short.MAX_VALUE))
@@ -189,7 +209,7 @@ public class FrmSegmentosFusion extends javax.swing.JFrame {
         txtProceso.append("\nLista ordenada final:\n" + listaFinal.toString() + "\n");
     }//GEN-LAST:event_btnFusionarActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnEquilibradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEquilibradaActionPerformed
         // TODO add your handling code here:
         if (segmentos.isEmpty()) {
             txtProceso.setText("Primero divida en segmentos.\n");
@@ -213,8 +233,41 @@ public class FrmSegmentosFusion extends javax.swing.JFrame {
         Collections.sort(resultado);
 
         txtProceso.append("Resultado final (Equilibrada Múltiple):\n" + resultado + "\n");
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnEquilibradaActionPerformed
 
+    private void btnPolifasicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPolifasicoActionPerformed
+        // TODO add your handling code here:
+        if (listaNumeros.isEmpty()) {
+            txtProceso.setText("Primero genere la lista.\n");
+            return;
+        }
+
+        txtProceso.append("\n--- Método Polifásico ---\n");
+
+        ArrayList<ArrayList<Integer>> runs = new ArrayList<>();
+        int i = 0;
+
+        while (i < listaNumeros.size()) {
+            int tamCorrida = Math.min((i % 5) + 3, listaNumeros.size() - i);
+            ArrayList<Integer> corrida = new ArrayList<>(listaNumeros.subList(i, i + tamCorrida));
+            Collections.sort(corrida);
+            runs.add(corrida);
+            txtProceso.append("Corrida creada: " + corrida + "\n");
+            i += tamCorrida;
+        }
+
+        while (runs.size() > 1) {
+            ArrayList<Integer> a = runs.remove(0);
+            ArrayList<Integer> b = runs.remove(0);
+            ArrayList<Integer> fusion = fusionarCorridas(a, b);
+            txtProceso.append("Fusionando: " + a + " + " + b + " => " + fusion + "\n");
+            runs.add(fusion);
+        }
+
+        txtProceso.append("Resultado final (Polifásico):\n" + runs.get(0) + "\n");
+    }//GEN-LAST:event_btnPolifasicoActionPerformed
+
+    
     /**
      * @param args the command line arguments
      */
@@ -253,9 +306,9 @@ public class FrmSegmentosFusion extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCargar;
     private javax.swing.JButton btnDividir;
+    private javax.swing.JButton btnEquilibrada;
     private javax.swing.JButton btnFusionar;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton btnPolifasico;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea txtProceso;
